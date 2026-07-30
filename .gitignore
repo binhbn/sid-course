@@ -1,0 +1,40 @@
+# ============================================================
+# .gitignore — SID Course
+# Nguyên tắc: file đã lọt vào git thì xoá đi vẫn còn trong lịch sử.
+# Nên chặn TRƯỚC, không chặn sau.
+# ============================================================
+
+# --- Bí mật: tuyệt đối không bao giờ ---
+.env
+.env.*
+*token*
+*secret*
+*credential*
+*.key
+*.pem
+
+# --- Data thô / file nặng: không nên nằm trong git ---
+*.csv
+*.xlsx
+*.xls
+*.pdf
+data/
+logs/
+
+# --- Repo tài liệu gốc của khoá học (rooneyhoi/SID-course-v2) ---
+# Đây là một git repo ĐỘC LẬP nằm lồng bên trong.
+# Nó có lịch sử riêng và được cập nhật bằng `git pull`, KHÔNG commit vào repo này.
+SID-course-v2/
+
+# --- Rác hệ thống Windows / editor ---
+Thumbs.db
+desktop.ini
+.DS_Store
+*.tmp
+~$*
+
+# --- Nếu sau này project sinh code ---
+node_modules/
+__pycache__/
+.venv/
+venv/
