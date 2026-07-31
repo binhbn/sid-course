@@ -1,60 +1,211 @@
 # Thực hành 1 — Chẩn đoán prompt cũ
 
-**Dữ liệu thật:** 5 prompt trong transcript Claude Code của tôi, 07–20/07/2026 — chọn những lượt
-tôi kỳ vọng cao nhưng phải làm lại nhiều vòng.
+**Dữ liệu thật:** 4 prompt trong lịch sử hội thoại AI của tôi, tháng 02/2026 và tháng 07/2026 —
+chọn những lượt tôi kỳ vọng nhận được sản phẩm dùng ngay, nhưng kết quả trả về hoặc thừa, hoặc
+không giao được, hoặc phải sửa qua nhiều vòng.
 
-| # | Ngày | Prompt (trích) | Hậu quả đo được |
-|---|---|---|---|
-| P1 | 12/07 | "regen và deploy ads-actions.html… anh nên đưa bao nhiêu task vào 1 lần chat?… liệu playbook như này đã đủ tốt chưa" | Phần playbook không ra kết luận; phải bổ sung ngưỡng qua **3 lượt dài** sau đó |
-| P2 | 09/07 | "báo cáo tuần anh đang ưng ý rồi… hướng tạo báo cáo daily thì em thấy sao?… viết lại prompt trên cho tối ưu" | Ra SPEC dùng được, nhưng **lượt kế tiếp** phải bù 3 ràng buộc, nặng nhất là "đang có report Ads ở hội thoại khác" |
-| P3 | 17/07 | "đánh giá xem hệ thống report đã giải quyết được… Em có đề xuất gì tối ưu UI/UX hoặc tính năng?" | Nhận về **bản chấm điểm** trong khi tôi cần plan để làm; mất **3 lượt** mới ra thứ triển khai được |
-| P4 | 20/07 | "bạn anh hướng dẫn 1 mẹo… cứ khi đạt 45% token thì tự động compact… Em cũng triển khai" | Mẹo vốn không chạy được; đôi bên sai số, tôi phải bắt lỗi và chỉnh lại giữa chừng |
-| P5 | 07/07 | "1. muốn nhìn xu hướng theo ngày… 2. sắp xếp lagging/leading… 3. bổ sung dữ liệu từ tháng 1.2027, làm tab dữ liệu theo tháng" | **Chuỗi rework dài nhất tháng (8 lượt)**; %(COGS+FBA) ra 36–41% vs team tính tay 46–47% (coverage COGS T1 chỉ 61%) |
+> **Ghi chú về dữ liệu:** phần "Nguyên văn" chép lại từ lịch sử hội thoại, có thể lệch đôi chỗ ở
+> đầu/cuối đoạn. Một vài tên tài liệu nội bộ và đường link đã được thay bằng dấu ngoặc vuông.
 
-### Tự chấm 7 yếu tố
+---
 
-| Yếu tố | P1 | P2 | P3 | P4 | P5 |
-|---|---|---|---|---|---|
-| Topic | Có (3 topic rời) | Có | Có | Có | Có |
-| Problem | Trộn nhiều bài toán | Mơ hồ | Trộn nhiều bài toán | Mơ hồ (nêu giải pháp, không nêu cơn đau) | Trộn nhiều bài toán |
-| Audience | Mơ hồ | Không có | Mơ hồ | Rõ | Rõ |
-| Context | Rõ | Thiếu | Rõ | Thiếu | Thiếu (giấu mốc 46–47%) |
-| Scope | Không có | Quá rộng | Quá rộng | Không có | Quá rộng |
-| Output | Chỉ "đánh giá" | Sản phẩm rõ | Chỉ "đánh giá/đề xuất" | Chỉ "triển khai" | Trộn lệnh-làm và xin-đề-xuất |
-| Task | Nhiều nhiệm vụ trộn | Một nhiệm vụ | Nhiều nhiệm vụ trộn | Một nhiệm vụ | Nhiều nhiệm vụ trộn |
+## Prompt 1 — Yêu cầu "template hoặc quy trình" mà không nói dùng để làm gì
 
-### Ba lỗi lặp lại
+**Nguyên văn:**
 
-1. **Gộp nhiều mạch việc vào một lượt** (P1, P3, P5) — lệnh thực thi + câu hỏi tư vấn + yêu cầu
-   thiết kế nằm cạnh nhau, nên bài toán thật bị chôn ở cuối và trả về nửa vời.
-2. **Output dừng ở "đánh giá / đề xuất"** (P1, P3, P4) — không nói ra file gì, dạng gì, nên nhận về
-   bản chấm điểm thay vì thứ bắt tay làm được.
-3. **Không có ngưỡng nghiệm thu và luật xử lý khi thiếu data** (P4, P5) — đây là chỗ đắt nhất:
-   ca P5 sai số vì code âm thầm lấy giá từ file plan thay vì báo thiếu. Lỗi fallback im lặng là lỗi
-   của AI, nhưng phần thuộc cách giao việc thì có thật — prompt không nêu mốc đối chiếu, cũng không
-   nói phải dừng khi thiếu data. Bài học này về sau thành luật "thiếu data → DỪNG" và gate COGS ≥95%.
+> Hiện tại tôi đang trực tiếp cầm một số sản phẩm (ASINs) để vận hành, mục tiêu là để có cảm nhận
+> trực tiếp (xem vấn đề ở đâu, tại sao nhân sự chưa triển khai vận hành hiệu quả hoặc có gì có thể
+> tối ưu thêm từ knowhow hiện tại), để nắm bắt knowhow mới khi có - test thử tính năng mới (điều mà
+> tôi thấy nhân sự vận hành thường không để ý mà chỉ tập trung vào knowhow đã chốt)...
+> Hiện tại tôi đang nghĩ nên có hướng ghi nhận dữ liệu ở bước đầu như nào, và tracking mỗi lần tôi
+> thao tác tối ưu để so sánh.
+>
+> Bạn hãy đề xuất cho tôi template hoặc quy trình triển khai phù hợp.
 
-### Viết lại — Framing Brief rút gọn
+**Ngày:** 16/02/2026
 
-- **P1:** Tôi là CEO Pukido, đã có playbook vận hành ASIN nhưng nhân sự MKT hiểu sai luật chuyển
-  Growth 1→Growth 2 nên chọn nhầm bộ từ khoá. Cần một trang tra cứu 1 mặt giấy cho nhân sự MKT: mỗi
-  stage = dấu hiệu nhận biết + mục tiêu + 3 hành động + ngưỡng số (Growth 2: KW volume ≥1.000 vào
-  top 10 organic, sàn %PL3 ≥10%). Lượt này không đụng deploy, không bàn chuyện gõ bao nhiêu topic.
-- **P2:** Đã có báo cáo tuần chạy tốt; cần một trang daily đọc trong 30 giây mỗi sáng cho chính tôi,
-  chỉ hiện chỉ số dẫn + cảnh báo cần xử lý ngay, cửa sổ 7 ngày, kế thừa loader và cache của báo cáo
-  tuần. Không đặt PL3/PL5 lên daily (nguồn fee thật chỉ về theo tuần), không quét Cerebro, không
-  chồng lấn report Ads đang dựng ở hội thoại khác — nếu chạm thì dừng hỏi.
-- **P3:** report.pukido.com hiện quá nhiều thông tin nên nhân sự MKT không biết nhìn đâu trước. Cần
-  một plan triển khai để bắt tay ngay trong tuần: bỏ/gộp khối gây rối, nêu rõ mỗi trang trả lời câu
-  hỏi nào của ai. Không chấm điểm hệ thống, không bàn MCP-Ads hay lớp follow-up trong lượt này.
-- **P4:** Tôi dùng Claude Code cả ngày và sợ mất số liệu/ràng buộc đã chốt khi phiên dài — đó mới là
-  cơn đau, không phải con số "45%". Hãy kiểm chứng mẹo tự-compact có thật không trước khi làm, rồi
-  đề xuất cách thật kèm nguồn tra được. Không sửa settings global cho tới khi tôi duyệt.
-- **P5:** Số trên báo cáo này dùng để chấm COM nhân sự nên sai là sai tiền thật. Lượt này chỉ dựng
-  tab dữ liệu theo tháng (Jan 2026 → nay), dùng đúng bộ chỉ số lagging/leading của tab tổng quan, và
-  đối chiếu %(COGS+FBA) với mốc team tính tay 46–47% — lệch quá 2 điểm % thì dừng, báo tôi, không
-  xuất. Không dùng file plan thay giá vốn thật, không đẩy Lark, không đụng xu hướng ngày.
+**Kết quả nhận về:** AI mở đầu bằng việc tự diễn giải lại mục tiêu của tôi thành ba nhánh — dấu
+hiệu nó phải đoán ý. Cuối lượt nhận được nguyên một bộ bốn file kèm hướng dẫn lưu trữ, ba lời nhắc
+định kỳ và một checklist tự chấm. Lượt kết thúc bằng câu AI hỏi ngược *"Bạn muốn tôi customize
+thêm không?"* — tức chính nó cũng không chắc bản giao có trúng hay không.
 
+| Yếu tố | Trạng thái | Ghi chú lỗi |
+|---|---|---|
+| Topic | Có | Tracking thao tác tối ưu ASIN do chính tôi cầm |
+| Problem | Trộn nhiều bài toán | Ba mục tiêu khác bản chất bị gộp: chẩn đoán nhân sự, học knowhow mới, so sánh trước/sau tối ưu |
+| Audience | Không có | Không nói template này ai điền — chỉ mình tôi, hay sau này nhân sự dùng lại |
+| Context | Thiếu | Không nêu đang dùng công cụ gì, dữ liệu lấy ở đâu, đã có hệ nào chưa |
+| Scope | Không có | Không giới hạn số ASIN, thời gian chạy thử, hay độ nặng chấp nhận được |
+| Output | Chỉ yêu cầu "template hoặc quy trình" | Chữ "hoặc" giao quyền chọn dạng sản phẩm cho AI → nhận về cả bộ bốn file |
+| Task | Nhiều nhiệm vụ trộn | Thiết kế cách ghi baseline + thiết kế cách tracking + đề xuất quy trình vận hành |
+
+**Viết lại — Framing Brief rút gọn:** Tôi là CEO đang tự tay vận hành vài ASIN để kiểm chứng knowhow
+trước khi chuẩn hoá cho team; tôi cần **một bảng log duy nhất, mỗi lần ghi dưới 2 phút**, để so sánh
+chỉ số trước và sau mỗi lần tôi can thiệp. Chỉ làm phần ghi nhận và so sánh của riêng tôi — không
+thiết kế quy trình cho nhân sự, không dựng bộ tài liệu hướng dẫn, không đề xuất nhịp họp hay lịch nhắc.
+
+---
+
+## Prompt 2 — Đưa ba hiện trạng, hỏi "tối ưu như nào" mà không nói tối ưu theo tiêu chí gì
+
+**Nguyên văn:**
+
+> Hiện tại tôi đang thấy có 1 vấn đề với các nhân sự MKT là họ quản lý nhiều ASINs quá 40-60 ASINs.
+> => nhân sự nếu rà soát lần lượt các ASINs sẽ bị quá tải. Tôi hiện tại đang có 3 loại báo cáo để
+> nhân sự MKT check. Tôi đang suy nghĩ nên điều chỉnh / tối ưu như nào phù hợp. Bạn hãy đề xuất cho tôi:
+>
+> 1. Báo cáo top 10-15 ASINs trọng điểm nhân sự đang follow up — [tên báo cáo nội bộ] update hàng tuần.
+> 2. Báo cáo MKT daily để xem performance của toàn bộ các ASINs được update hàng ngày.
+> 3. [tên báo cáo nội bộ] để lọc ra toàn bộ những sản phẩm có performance không tốt (ROAS thấp, CTR, CVR thấp...)
+
+**Ngày:** 09/02/2026
+
+**Kết quả nhận về:** AI **không giao được sản phẩm nào** ở lượt đầu. Nó mở bằng *"Để đưa ra đề xuất
+chính xác, tôi cần làm rõ một số điểm"* rồi hỏi ngược bốn nhóm câu hỏi. Thứ duy nhất nhận được là
+một bảng so sánh ba báo cáo — tức mô tả lại chính hiện trạng tôi vừa kể, chưa phải giải pháp.
+
+| Yếu tố | Trạng thái | Ghi chú lỗi |
+|---|---|---|
+| Topic | Có | Bộ ba báo cáo MKT đang dùng |
+| Problem | Mơ hồ | "Nhân sự quá tải" là triệu chứng; chưa nói quá tải ở khâu nào — đọc số, ra quyết định, hay ghi báo cáo |
+| Audience | Mơ hồ | Có nhắc "nhân sự MKT" nhưng không nói ai đọc bản đề xuất và ai có quyền đổi báo cáo |
+| Context | Thiếu | Không đính kèm nội dung ba báo cáo, không nói cái nào đang thực sự được dùng |
+| Scope | Quá rộng | "Điều chỉnh / tối ưu" mở toang: gộp, bỏ, đổi tần suất, đổi chỉ số, hay đổi cả quy trình đều lọt |
+| Output | Chỉ yêu cầu "đề xuất" | Không gọi tên sản phẩm: bản so sánh, phương án gộp, hay bộ báo cáo mới |
+| Task | Một nhiệm vụ | Điểm mạnh duy nhất của prompt này — chỉ có một việc |
+
+**Viết lại — Framing Brief rút gọn:** Tôi là CEO công ty Amazon FBA, mỗi marketer đang phải theo
+hàng chục ASIN và hiện có ba báo cáo chồng chéo nhau. Tôi cần **một bản đề xuất gộp hoặc cắt xuống
+còn tối đa hai báo cáo**, nêu rõ mỗi báo cáo trả lời câu hỏi ra quyết định nào và tần suất bao lâu.
+Chỉ làm ở tầng cấu trúc báo cáo — không thiết kế template chi tiết, không đề xuất công cụ mới,
+không bàn tới quy trình họp.
+
+---
+
+## Prompt 3 — Nhờ AI viết prompt cho chính AI, kèm ba nguồn phải tự đi đọc
+
+**Nguyên văn:**
+
+> Hiện tại tôi đang muốn xây dựng Playbook hoặc tài liệu hướng dẫn vận hành cho [team nội bộ], đội
+> ngũ nhân sự MKT vận hành sản phẩm nội bộ.
+>
+> Tôi đã có những buổi đào tạo rất chi tiết rồi nhưng thấy nhân sự vẫn loay hoay trong quá trình
+> triển khai. Bạn có thể kiểm tra kho knowhow trong Notion và các meeting note cũng như vừa rồi tôi
+> phải làm 1 mindmap phân tích chi tiết như này để hỗ trợ nhân sự triển khai đẩy rank các sản phẩm
+> lên Growth nhưng cũng phải follow up liên tục trong 2 tuần mới ok [...link nội bộ...]
+>
+> Bạn hãy phân tích và tạo 1 prompt tối ưu để tôi gửi cho bạn hỗ trợ tôi trong việc này. Bạn có thể
+> hỏi tôi thêm các thông tin nếu cần để triển khai công việc một cách tốt nhất.
+
+**Ngày:** 14/07/2026
+
+**Kết quả nhận về:** Đây là prompt tốn nhiều vòng sửa nhất trong bốn bản. Chuỗi diễn ra: AI đọc ba
+nguồn, phản biện rằng nếu output lại là thêm một tài liệu know-how nữa thì tôi lặp lại đúng cái bẫy
+cũ; ra bản prompt nháp; hỏi tôi ba quyết định; tự đổi vai đánh giá lại chính nó hai lần và tìm thêm
+lỗi mỗi lần. Giữa chừng tôi phải đóng khung lại toàn bộ sản phẩm. Hội thoại kết thúc mà vẫn còn năm
+mục treo chưa chốt được.
+
+| Yếu tố | Trạng thái | Ghi chú lỗi |
+|---|---|---|
+| Topic | Có | Playbook vận hành cho team MKT |
+| Problem | Mơ hồ | "Nhân sự vẫn loay hoay" — không phân biệt loay hoay vì thiếu kiến thức, thiếu ưu tiên, hay thiếu kỷ luật. Chính khoảng mơ hồ này làm mất mấy vòng để chẩn đoán lại |
+| Audience | Mơ hồ | "Nhân sự MKT" nhưng không nói trình độ, ai là chủ tài liệu, ai bảo trì |
+| Context | Rõ | Điểm mạnh: chỉ đúng ba nguồn cần đọc |
+| Scope | Quá rộng | Không giới hạn giai đoạn vòng đời nào, nên về sau phải quay lại chốt |
+| Output | Chỉ yêu cầu "chi tiết" | Sản phẩm được định nghĩa vòng vo: "Playbook **hoặc** tài liệu hướng dẫn" → chuyển thành "tạo 1 prompt" → cuối cùng mới lộ ra là cẩm nang kèm workbook. Bản chất sản phẩm chỉ rõ ở lượt thứ N |
+| Task | Nhiều nhiệm vụ trộn | Đọc và tổng hợp ba nguồn + chẩn đoán nguyên nhân + viết prompt cho chính mình. Ba việc, ba loại tư duy |
+
+**Viết lại — Framing Brief rút gọn:** Nhân sự MKT của tôi đã được đào tạo đủ know-how nhưng vẫn
+không tự chạy được chiến dịch đẩy rank, khiến tôi phải theo sát thủ công. Tôi cần **một checklist
+"một tuần của một ASIN" dài tối đa hai trang**, mỗi bước có một tiêu chí "thế nào là xong" đo được,
+trỏ ngược về tài liệu đào tạo đã có. Không viết lại know-how, không thiết kế bộ chỉ số hay dashboard
+ở lượt này, và không viết prompt hộ tôi — làm thẳng sản phẩm.
+
+---
+
+## Prompt 4 — Khai "ba bản nội dung" nhưng chỉ liệt kê hai, rồi cộng thêm hai việc ở cuối
+
+**Nguyên văn:**
+
+> Hiện tại anh đang muốn nghiên cứu hệ thống OKRs chuẩn từ [kênh YouTube về OKR].
+>
+> Anh muốn tổng hợp các kiến thức quan trọng như các định nghĩa, best practice, case study, cách
+> triển khai, hướng dẫn triển khai với một người nắm cơ bản về định nghĩa rồi nhưng đã nhiều lần
+> triển khai chưa thành công như bản thân anh và team. Anh muốn áp dụng luôn cho nửa cuối năm.
+>
+> Output sẽ là 3 bản nội dung:
+>
+> 1. Những kiến thức, định nghĩa, hướng dẫn, case study chung tổng hợp từ các video từ kênh => lưu
+>    lại vào Notion kho kiến thức để sau này anh có thể tham khảo lại, làm tài liệu đào tạo cho team...
+> 2. Bản hướng dẫn triển khai phù hợp với anh để anh áp dụng cho nửa cuối năm.
+>
+> Em hãy đề xuất xem các yêu cầu trên đã đủ tối ưu? chưa ok thì hãy viết lại thành một prompt tối ưu
+> để xây dựng thành 1 plan rồi anh sẽ copy paste qua công cụ khác triển khai tiếp.
+>
+> Em cũng đề xuất thêm cho anh lần sau với việc nghiên cứu các kênh như này thì quy trình triển khai
+> nên như nào, với prompt cụ thể từng bước, bộ agents (skills) tạo thêm nếu cần.
+
+**Ngày:** 13/07/2026
+
+**Kết quả nhận về:** AI không làm việc được ngay mà mở đầu bằng một mục phản biện sáu điểm, trong
+đó ba điểm rơi đúng vào lỗi framing: (a) khai "3 bản nội dung" nhưng chỉ liệt kê hai, nên nó phải
+để trống bản thứ ba thay vì đoán; (b) "áp dụng luôn cho nửa cuối năm" mâu thuẫn thời điểm — kỳ đó
+đã đang chạy và OKR đã chốt, nên bài toán thật là *vận hành* OKR chứ không phải *set* OKR; (c) phạm
+vi nguồn không giới hạn, "tổng hợp các video từ kênh" nghĩa là hàng trăm video nên nó phải tự đặt trần.
+
+| Yếu tố | Trạng thái | Ghi chú lỗi |
+|---|---|---|
+| Topic | Có | Hệ thống OKR |
+| Problem | Trộn nhiều bài toán | "Nhiều lần triển khai chưa thành công" là dữ liệu quý nhất nhưng không được mô tả — AI phải hỏi ngược mới có. Bài toán thật (vận hành OKR đang chạy) bị phát biểu nhầm thành nghiên cứu lý thuyết |
+| Audience | Mơ hồ | "Một người nắm cơ bản về định nghĩa rồi" — không rõ là tôi, là team, hay cả hai; trong khi tài liệu số 1 lại nhắm cho team đọc sau này |
+| Context | Thiếu | Không nêu OKR hiện có đang như thế nào, hỏng ở đâu |
+| Scope | Quá rộng | Nguồn không giới hạn số lượng; phạm vi áp dụng cũng không giới hạn |
+| Output | Sản phẩm rõ nhưng **đếm sai** | Khai ba bản mà chỉ mô tả hai — AI buộc phải đoán hoặc hỏi lại. Đây là lỗi nặng nhất của prompt này |
+| Task | Nhiều nhiệm vụ trộn | Bốn việc trong một lượt: nghiên cứu nguồn + soạn tài liệu + đánh giá và viết lại chính prompt này + thiết kế quy trình tái sử dụng cho lần sau |
+
+**Viết lại — Framing Brief rút gọn:** OKR kỳ này của công ty tôi đã chốt và đang chạy, nhưng các chu
+kỳ trước đều chết giữa đường. Tôi cần **một playbook vận hành OKR dài tối đa ba trang** cho chu kỳ
+đang chạy: nhịp check-in, cách chấm điểm, cách xử lý khi kết quả then chốt đi lệch. Không tổng hợp
+lý thuyết OKR tổng quát, không viết lại prompt hộ tôi, và không thiết kế quy trình nghiên cứu cho
+lần sau — đó là bài riêng.
+
+---
+
+## Ma trận tổng hợp bốn prompt
+
+| Yếu tố | Prompt 1 | Prompt 2 | Prompt 3 | Prompt 4 |
+|---|---|---|---|---|
+| Topic | Có | Có | Có | Có |
+| Problem | Trộn nhiều bài toán | Mơ hồ | Mơ hồ | Trộn nhiều bài toán |
+| Audience | Không có | Mơ hồ | Mơ hồ | Mơ hồ |
+| Context | Thiếu | Thiếu | **Rõ** | Thiếu |
+| Scope | Không có | Quá rộng | Quá rộng | Quá rộng |
+| Output | Chỉ "template hoặc quy trình" | Chỉ "đề xuất" | Chỉ "chi tiết" | Rõ nhưng đếm sai |
+| Task | Nhiều nhiệm vụ trộn | **Một nhiệm vụ** | Nhiều nhiệm vụ trộn | Nhiều nhiệm vụ trộn |
+
+Đọc theo cột thì thấy từng prompt hỏng ở đâu. Đọc theo hàng thì thấy thứ đáng chú ý hơn:
+**Audience và Scope hỏng ở cả bốn prompt, không có ngoại lệ.**
+
+## Ba lỗi lặp lại
+
+1. **Kết prompt bằng một động từ mở.** "Đề xuất cho tôi", "tối ưu như nào", "template hoặc quy
+   trình" — không gọi tên sản phẩm cần nhận. Hậu quả chia hai hướng trái ngược nhau: Prompt 1 khiến
+   AI đoán rồi giao thừa cả bộ bốn file, Prompt 2 khiến AI không dám giao gì và hỏi ngược bốn nhóm
+   câu hỏi. Cùng một lỗi, hai kiểu thất bại.
+
+2. **Nhồi nhiều loại việc khác bản chất vào một lượt.** Prompt 3 và 4 đều trộn ba đến bốn việc, và
+   cùng mắc một biến thể đặc biệt: *nhờ AI viết prompt hộ mình rồi mới làm*. Việc này kéo dài chuỗi
+   thêm vài vòng trước khi chạm được sản phẩm thật, trong khi bản thân nó cũng là một task riêng cần
+   được định khung.
+
+3. **Không nêu audience và không cắt phạm vi.** Đây là lỗi duy nhất xuất hiện ở cả bốn prompt. Không
+   có audience thì AI không biết viết cho ai đọc, nên chọn mức chi tiết theo cảm tính. Không có
+   phạm vi thì mọi hướng mở rộng đều hợp lệ, nên nó mở rộng.
+
+**Điều tôi rút ra:** giữa tháng 02 và tháng 07, phần bối cảnh trong prompt của tôi đã tốt lên rõ
+(Prompt 3 là prompt duy nhất được chấm "Context: Rõ"). Nhưng Audience và Scope thì không cải thiện
+chút nào — vì tôi vẫn nghĩ chúng là thứ "AI tự suy ra được". Đúng như bài học chỉ ra, đó chính là
+hai chỗ AI không bao giờ tự suy ra đúng.
 
 # Thực hành 2 — Một chủ đề, nhiều bài toán
 
