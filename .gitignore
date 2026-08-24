@@ -26,6 +26,10 @@ logs/
 # Nó có lịch sử riêng và được cập nhật bằng `git pull`, KHÔNG commit vào repo này.
 SID-course-v2/
 
+# --- Repo tham khảo rooneyhoi/mental-wellness-prompts ---
+# Cũng là git repo ĐỘC LẬP clone về để đọc, cập nhật bằng `git pull`.
+mental-wellness-prompts/
+
 # --- Không nộp cho thầy: giữ local ---
 # custom-gpt: trợ lý RTC-COE anh Bình tự dựng để DÙNG, không phải bài nộp.
 # tai-lieu-thay-share: tài liệu thầy share riêng — repo này PUBLIC, không phát tán.
@@ -36,6 +40,10 @@ tai-lieu-thay-share/
 # Repo này public; bản nộp dùng nhãn ẩn danh.
 *KHONG-NOP*
 _local-*
+
+# --- Áp dụng SID vào việc thật Pukido (playbook + case Scale Insights) ---
+# Chứa data nội bộ (rule ads, số liệu SI) — SSOT nằm trên Notion, KHÔNG push repo public.
+ap-dung/
 
 # --- Rác hệ thống Windows / editor ---
 Thumbs.db
