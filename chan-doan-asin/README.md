@@ -104,8 +104,10 @@ in dòng cuối `Tự kiểm: N/7 đạt`.
 
 ## Xem demo
 
-[`demo/index.html`](demo/index.html) — kết quả chấm **4 sản phẩm thật** bằng thang 3 tầng: 1 trang tổng
-quan + 4 trang chi tiết, sidebar bên trái để chuyển.
+**[Mở bản online](https://claude.ai/code/artifact/83bf2ea9-3f67-4514-85ea-f8b80c4319d0)** — 5 trang gộp thành một, bấm sidebar để chuyển. Không cần tải gì.
+
+Bản trong repo: [`demo/index.html`](demo/index.html) — kết quả chấm **4 sản phẩm thật** bằng thang 3
+tầng: 1 trang tổng quan + 4 trang chi tiết, sidebar bên trái để chuyển.
 
 > ⚠️ **Bấm thẳng file `.html` trên GitHub sẽ ra mã nguồn, không ra trang** — GitHub không render HTML.
 > Tải repo về (`Code → Download ZIP`) rồi mở `chan-doan-asin/demo/index.html` bằng trình duyệt.

@@ -13,7 +13,7 @@ mỗi buổi một bài rời:
 |---|---|
 | **Thầy / bạn học** — chấm bài, xem em học được gì | [`bai-lam/`](bai-lam/) — bảng buổi nào nộp gì, ở file nào |
 | **Người muốn dùng thật** — cài về chạy | [`chan-doan-asin/`](chan-doan-asin/) — README có hướng dẫn cài 5 phút |
-| **Muốn xem nó chạy ra gì** | [`chan-doan-asin/demo/`](chan-doan-asin/demo/) — 5 trang chấm điểm 4 sản phẩm thật |
+| **Muốn xem nó chạy ra gì** | [Xem online](https://claude.ai/code/artifact/83bf2ea9-3f67-4514-85ea-f8b80c4319d0) — bản gộp 5 trang, mở là chạy. Hoặc tải repo về mở [`chan-doan-asin/demo/`](chan-doan-asin/demo/) |
 
 ---
 
