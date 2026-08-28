@@ -8,8 +8,8 @@ Buổi 1 Framing → Buổi 2 Prompt Stack → Buổi 3 chatbot chẩn đoán ad
 
 | | Là gì |
 |---|---|
-| [`thang-cham-diem-listing.md`](thang-cham-diem-listing.md) | Cây → **thang chấm 3 tầng** (cổng · phân biệt · so đối thủ). Đây là chỗ cây biến thành thứ đo được. |
-| [`demo-trang-cham-diem/index.html`](demo-trang-cham-diem/index.html) | Kết quả chấm **4 sản phẩm thật** (mã đã đổi): 1 trang tổng quan + 4 trang chi tiết. |
+| [`thang-cham-diem-listing.md`](../thang-cham-diem-listing.md) | Cây → **thang chấm 3 tầng** (cổng · phân biệt · so đối thủ). Đây là chỗ cây biến thành thứ đo được. |
+| [`demo/index.html`](../demo/index.html) | Kết quả chấm **4 sản phẩm thật** (mã đã đổi): 1 trang tổng quan + 4 trang chi tiết. |
 
 Đợt rà đầu tiên cho ra một kết quả không đoán trước được: **4 sản phẩm cùng bị gắn nhãn “CVR thấp”
 nhưng có 4 nguyên nhân khác nhau, và chỉ 1 trong 4 thật sự nghẽn ở trang sản phẩm.** Chi tiết ở mục 10.

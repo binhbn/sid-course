@@ -1,6 +1,6 @@
 # Thang chấm điểm listing — bộ công cụ đo từ cây Phần A
 
-**Bản v0.9 · 28/08/2026 · phụ lục của [`decomposition-listing-cvr.md`](decomposition-listing-cvr.md)**
+**Bản v0.9 · 28/08/2026 · phụ lục của [`thiet-ke/05-decomposition-listing-cvr.md`](thiet-ke/05-decomposition-listing-cvr.md)**
 
 Cây decomposition trả lời câu *"listing gồm những gì"*. File này trả lời câu tiếp theo — **"cái nào
 đang yếu, và sửa cái nào trước"** — bằng một thang chấm mà hai người chấm cùng một listing phải ra
