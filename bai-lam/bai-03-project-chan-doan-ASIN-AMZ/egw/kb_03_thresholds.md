@@ -1,6 +1,6 @@
 # kb_03_thresholds.md — Ngưỡng: bạn tự đặt, bot không đặt hộ
 
-**version:** v1.0 · **cập nhật:** 16/08/2026 · **bản:** EGW (học viên tự vận hành)
+**version:** v1.1 · **cập nhật:** 28/08/2026 · **bản:** EGW (học viên tự vận hành)
 
 > Đây là file khác nhiều nhất giữa bản nội bộ và bản này. Bản dùng cho một đội vận hành cụ thể có
 > sẵn bảng ngưỡng của họ. Bạn thì **chưa** — và đó là chuyện bình thường, không phải thiếu sót.
@@ -73,6 +73,28 @@ Tiền chấp nhận mất để thử một target  ÷  giá trung bình một 
 Ngách bấm rẻ thì con số này lớn hơn; ngách bấm đắt thì nhỏ hơn. **Không có con số chung cho mọi
 người.**
 
+### 1.4. Mốc so cho tỉ lệ chuyển đổi — hỏi RIÊNG, không hỏi ở đầu phiên
+
+Ba con số trên hỏi gộp một lần đầu phiên. Con số này **chỉ hỏi khi thật sự cần**: khi đã xuống tới
+tầng C3, đã có Business Report, và sắp phải nói tỉ lệ chuyển đổi là cao hay thấp. Hỏi trước là bắt
+người dùng trả lời một câu có thể không dùng tới.
+
+```
+Tôi tính được tỉ lệ chuyển đổi của listing là <x>%. Để nói con số này cao hay thấp,
+tôi cần một mốc để so — bạn có cái nào sau đây không?
+  · Tỉ lệ của chính ASIN này ở một kỳ trước (tốt nhất — cùng sản phẩm, cùng khách)
+  · Tỉ lệ của một ASIN khác cùng ngách bạn đang bán
+  · Mốc ngành hàng bạn đang dùng
+Chưa có cũng không sao — tôi sẽ trình bày vị trí thay vì phán cao/thấp.
+```
+
+**Không có mốc thì bot KHÔNG được viết "listing kém" hay "chuyển đổi thấp".** Viết đúng là: *"tỉ lệ
+chuyển đổi của listing là <x>%; tôi chưa có mốc để nói con số này cao hay thấp."* Và bot **không tự
+lấy một mốc ngành hàng nào** — một con số mặt bằng nghe hợp lý sẽ dẫn tới việc sửa listing đang chạy tốt.
+
+**Mốc tự so tốt nhất là chính ASIN đó ở kỳ trước.** Nó khử được khác biệt ngách, khác biệt giá, khác
+biệt mùa — những thứ làm mọi mốc ngành hàng trở nên lỏng lẻo.
+
 ---
 
 ## 2. Chưa có ngưỡng thì bot làm gì
@@ -115,7 +137,7 @@ Không phải ngưỡng nghiệp vụ, mà là ngưỡng thống kê. Bot tự �
 
 | Mức mẫu | Bot làm gì |
 |---|---|
-| Dưới khoảng 50 lượt bấm **hoặc** dưới 5 đơn trong cửa sổ | **Không đọc tỉ lệ.** ROAS và tỉ lệ chuyển đổi lúc này chênh một đơn là đổi hẳn kết luận. Chỉ đọc chỉ số cấu trúc |
+| Dưới 50 lượt bấm **hoặc** dưới 5 đơn trong cửa sổ (**chạm đúng 50 hoặc đúng 5 vẫn tính là chưa đủ**) | **Không đọc tỉ lệ.** ROAS và tỉ lệ chuyển đổi lúc này chênh một đơn là đổi hẳn kết luận. Chỉ đọc chỉ số cấu trúc |
 | Một campaign dưới 10 lượt bấm | Không tính tỉ lệ chuyển đổi riêng cho campaign đó |
 
 Gặp mức mẫu nhỏ, bot nói thẳng: *"cửa sổ này chỉ có 38 lượt bấm và 2 đơn — quá ít để đọc tỉ lệ. Nới
@@ -135,6 +157,7 @@ cửa sổ ra, hoặc chỉ đọc phần cấu trúc."*
 | ROAS mục tiêu | ____ | Phải cao hơn điểm hoà vốn |
 | Ngưỡng cắt | ____ lượt bấm không ra đơn | Kèm cửa sổ đo |
 | Cửa sổ mặc định | ____ ngày | Dùng 14–30 ngày cho quyết định cắt |
+| Mốc so tỉ lệ chuyển đổi | ____ % | Của chính ASIN này kỳ trước, hoặc ASIN cùng ngách. Chưa có thì để trống |
 
 ---
 

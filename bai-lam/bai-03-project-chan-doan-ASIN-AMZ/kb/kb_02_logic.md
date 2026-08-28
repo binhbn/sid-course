@@ -20,7 +20,7 @@ Không qua đủ ba cổng thì không chạy chẩn đoán.
 | Đã khai cửa sổ thời gian? | Chưa → hỏi. Không có → chỉ chạy phần **cấu trúc**, đóng dấu "chưa xác nhận cửa sổ" |
 | Cửa sổ chạm 3 ngày gần nhất? | Có → gắn nhãn **"số chưa chín"** cho mọi kết luận về ROAS/ACOS/Orders/CVR |
 | **Cửa sổ có đủ dài để kết luận cắt?** | Xem Cổng 1.1 |
-| Mẫu có đủ để đọc tỉ lệ? | Dưới ~50 click **hoặc** ~5 đơn → **chỉ kết luận bằng chỉ số cấu trúc**, không dùng tỉ lệ |
+| Mẫu có đủ để đọc tỉ lệ? | Dưới 50 click **hoặc** dưới 5 đơn → **chỉ kết luận bằng chỉ số cấu trúc**, không dùng tỉ lệ. **Đúng 50 click, hoặc đúng 5 đơn, vẫn tính là chưa đủ** — chạm ngưỡng là áp luật, không phải vượt mới áp |
 
 ### Cổng 1.1 — Cửa sổ quyết định loại kết luận được phép đưa ra
 
@@ -161,6 +161,13 @@ làm chúng biến mất.
 
 **Đo:** tổng impression · số campaign ENABLED có spend · Top-of-search IS · tình trạng index (File B).
 
+> **Đọc Top-of-search Impression Share cho đúng.** Chỉ số này là **của từng campaign**, không phải của
+> ASIN. Không cộng, không lấy trung bình cộng giữa các campaign — campaign 12 impression và campaign
+> 40.000 impression không có cùng trọng số. Cách dùng đúng: nêu TOS IS của **campaign đang mang phần
+> lớn impression**, kèm tên campaign đó. File A trả chuỗi dạng `<5%` (đọc là "dưới 5%", không quy
+> thành 5), File D trả số — **không so hai file với nhau**. Không có cột này thì nói không có, đừng
+> suy TOS IS từ impression.
+
 | Bất thường | Nhánh nguyên nhân |
 |---|---|
 | Rất ít campaign đang chạy | **Nhánh 1** — nhưng phân biệt "chưa lên" với "đã lên rồi tắt", xem III.1 |
@@ -212,8 +219,21 @@ Phép so rẻ nhất trong cả khung, và là cách **phân định "quảng c�
 | Hai bên xấp xỉ | Không thêm thông tin | Xuống PL |
 | CVR ads **cao hơn** | Ads chọn đúng từ; traffic tự nhiên mới kéo tỉ lệ xuống | Xem lại từ khoá đang index |
 
-Hai số ở hai cửa sổ khác nhau → **chỉ đọc chênh lệch lớn**, và gọi đây là **tín hiệu định hướng**,
-không phải bằng chứng kết luận.
+**Hai con số này KHÔNG cùng một phép chia** — đây là bẫy nặng hơn chuyện khác cửa sổ:
+
+| | Mẫu số | Nguồn |
+|---|---|---|
+| CVR ads | **lượt bấm** vào quảng cáo | File A / File D |
+| CVR listing | **phiên truy cập** trang sản phẩm (Sessions) | File C |
+
+Một phiên có thể xem nhiều lần, một lượt bấm quảng cáo cũng tính là một phiên. Nên **cấm trừ hai số
+cho nhau, cấm chia hai số cho nhau**, và cấm nói "chênh 1,2 điểm phần trăm". Chỉ được đọc **chiều**:
+bên nào cao hơn hẳn.
+
+"Cao hơn hẳn" = **gấp rưỡi trở lên**. Dưới mức đó → ghi *"hai bên xấp xỉ"*, không diễn giải thêm.
+
+Hai file khác cửa sổ → nói rõ hai cửa sổ ngay tại chỗ so, và hạ kết quả xuống **tín hiệu định hướng**,
+không phải bằng chứng kết luận. Muốn dùng làm bằng chứng thì export lại hai file **cùng khoảng ngày**.
 
 ## PL — Lợi nhuận: có đơn rồi thì có lời không?
 
@@ -248,6 +268,20 @@ hơn hai phần ba số campaign mang vai sai so với tên. Không suy vai từ
 nguồn chỉ chứng minh được điều gì **có**, không chứng minh được điều gì **không có**.
 
 Không xác định được vai → **hỏi người dùng**, đừng gán.
+
+## Ba loại quảng cáo cũng là ba thước khác nhau
+
+`Type` trong File A có ba giá trị: `SP` · `SB2` (Sponsored Brands, gồm cả bản video) · `SD`. Đây là
+**ba tầng khác nhau của cùng một phễu**, không phải ba biến thể của một thứ.
+
+- **Không cộng gộp** spend/đơn của ba loại rồi tính một ROAS chung để phán.
+- **Không áp ngưỡng cắt của SP cho SB2 hoặc SD.** Ngưỡng người dùng đưa gần như luôn là ngưỡng nghĩ
+  cho SP; dùng lại cho SB2/SD là chấm bài bằng thước của loại khác.
+- Chưa có ngưỡng riêng cho SB2/SD → **trình bày vị trí, không kết luận cắt**: nêu số tiền, nêu tỉ
+  trọng trên tổng spend, gọi đúng tên là **điểm nóng cần người xem**, rồi dừng.
+
+Ca thật đã gặp: hai campaign Sponsored Brands Video chiếm 60% tiền tiêu của cả cửa sổ mà chưa ra đơn.
+Kết luận đúng là "điểm nóng, chưa được kết luận cắt", **không** phải "cắt hai campaign này".
 
 ---
 

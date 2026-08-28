@@ -163,6 +163,25 @@ và nêu rõ số lượng. Không đoán bừa.
 | Các cờ `Organic`, `Sponsored Product`, `Amazon Choice`… | 0/1 — vị trí đó có xuất hiện không | Cờ hiện diện, không phải thứ hạng |
 | `Search Volume Trend` | Số có dấu: `77`, `-28` | **Chưa xác minh đơn vị.** Chỉ đọc chiều tăng/giảm, **không dùng làm căn cứ cho bất kỳ ngưỡng nào** |
 
+### 3.0. Search Volume KHÔNG phải thứ tự cơ hội
+
+Từ khoá lượng tìm lớn nhất thường là từ **chung chung** — người tìm chưa biết mình muốn gì. Từ đúng
+**ý định** của sản phẩm thường nhỏ hơn nhiều mà lại ra đơn.
+
+Nên khi xếp cơ hội từ khoá, **không xếp theo `Search Volume`**. Đọc theo cặp:
+
+| Dấu hiệu | Đọc là |
+|---|---|
+| SV lớn · rank rất xa hoặc rỗng · từ chỉ mô tả loại sản phẩm chung | Từ chung chung — chưa phải cơ hội, và cũng là chỗ ads dễ đốt tiền |
+| SV vừa · từ có **thuộc tính hoặc dịp** của đúng sản phẩm này · rank rỗng | **Đây mới là khoảng trống đáng đẩy** |
+| SV bất kỳ · đã có rank tốt | Không phải khoảng trống — đây là chỗ cần giữ |
+
+Bot **không tự phán** từ nào đúng ý định khi tên sản phẩm không đủ để suy ra. Không chắc thì liệt kê
+kèm nhãn *"chưa xác định được ý định"* và hỏi người dùng, đừng xếp hạng bừa.
+
+> Cerebro lấy theo **ASIN cha**: từ khoá của biến thể khác cũng nằm trong bảng. Lọc bằng tên/thuộc
+> tính của đúng sản phẩm đang chẩn trước khi kết luận "chưa index".
+
 ### 3.1. File B là ảnh chụp một thời điểm
 
 Cerebro cho **rank hiện tại**, không có lịch sử.
@@ -228,7 +247,7 @@ một target trong một ngày.
 | `Match Type` | `EXACT` / `BROAD` / `PHRASE` / dạng target tự động | Đây mới là match type thật, tên campaign chỉ là ý định |
 | `Impressions`, `Clicks`, `Spend`, `Cost Per Click (CPC)` | số | Kiểu số thật, không phải chuỗi |
 | `Click-Thru Rate (CTR)`, `Total ACOS`, `Total ROAS`, `7 Day Conversion Rate` | tỉ lệ | **Rỗng khi không có đơn** — rỗng không phải 0 |
-| `Top-of-search Impression Share` | số | **Khác kiểu với cột cùng tên ở File A** (bên đó là chuỗi `<5%`) |
+| `Top-of-search Impression Share` | số | **Khác kiểu với cột cùng tên ở File A** (bên đó là chuỗi `<5%`). Là chỉ số **của campaign**, không phải của ASIN — không cộng, không trung bình cộng giữa các campaign |
 | `7 Day Total Sales / Orders / Units` | Kết quả trong cửa sổ quy đổi 7 ngày của Amazon | "7 Day" ở đây là **attribution window**, KHÔNG phải khoảng ngày của report |
 | `7 Day Advertised SKU …` vs `Other SKU …` | Doanh số của chính SKU quảng cáo vs SKU khác | Chênh lệch lớn giữa hai cột là tín hiệu đáng xem riêng |
 

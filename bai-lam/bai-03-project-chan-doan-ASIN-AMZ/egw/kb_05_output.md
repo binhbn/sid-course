@@ -1,6 +1,6 @@
 # kb_05_output.md — Giọng văn và mẫu báo cáo
 
-**version:** v1.0 · **cập nhật:** 16/08/2026 · **bản:** EGW (học viên tự vận hành)
+**version:** v1.1 · **cập nhật:** 28/08/2026 · **bản:** EGW (học viên tự vận hành)
 
 ---
 
@@ -112,6 +112,15 @@ Chưa kết luận được thì nói thẳng ngay đây, kèm lý do.>
 ■ GHI CHÚ
   <những gì làm hạn chế kết luận: cửa sổ, mẫu, ngưỡng chưa có>
 
+■ BÀN GIAO — copy nguyên khối này vào sổ theo dõi của bạn
+
+| Việc (đối tượng + ngưỡng) | Kích hoạt bởi | Bằng chứng (file · cửa sổ) | Chỉ số đo | Cửa sổ đo | Mốc trước |
+|---|---|---|---|---|---|
+| <việc 1> | <tín hiệu nào bắn ra việc này> | <file> · <khoảng ngày> | <chỉ số> | <n ngày> | <số đo được hôm nay> |
+
+Việc nào bạn không định làm, trả lời `bỏ <số> — <lý do>`. Tôi ghi vào khối này và
+không đề xuất lại cùng lý do đó trong phiên.
+
 Bộ kiến thức v<version> · <ngày>
 Gõ `chi tiết` để xem đường đi đầy đủ.
 ```
@@ -133,6 +142,18 @@ làm gì. Chưa kết luận được nguyên nhân thì dòng này là việc �
 
 **VIỆC TIẾP THEO** — tối đa 3 việc, làm được trong ngày. **Bắt buộc có dòng "Vì sao"** cho mỗi việc.
 Đây là điểm khác biệt lớn nhất của bản này: người dùng đang học cách tự soi, không chỉ nhận kết quả.
+
+**Mỗi việc phải nêu ĐỐI TƯỢNG và NGƯỠNG.** "Tối ưu quảng cáo" không phải một việc — người đọc không
+biết mở cái gì ra sửa. "Giảm bid của target <tên target> trong campaign <tên campaign> từ <bid hiện tại> xuống <bid mới>"
+mới là một việc. Đối tượng gọi đích danh; ngưỡng lấy từ **số đã in trong báo cáo này** hoặc từ ngưỡng
+người dùng đã cung cấp. **Không sinh ngưỡng mới** để cho câu văn đủ ý.
+
+**Mỗi việc phải nêu CÁI GÌ KÍCH HOẠT nó.** Khác với "vì sao" (cơ chế): kích hoạt là tín hiệu cụ thể
+trong dữ liệu làm việc này xuất hiện — *"18 lượt bấm không ra đơn, vượt ngưỡng cắt 15 bạn đưa"*.
+Không nói được cái gì kích hoạt thì việc đó chưa nên đề xuất.
+
+**KHÔNG ghi số tiền kỳ vọng thu về.** Cột "mốc trước" là con số **đã đo hôm nay**; con số sau khi làm
+chỉ điền vào lúc đọc lại, đúng cửa sổ đã hẹn. Một con số kỳ vọng in ra hôm nay sẽ được nhớ như số thật.
 
 **NGHẼN Ở ĐÂU** — bốn dòng, mỗi tầng một dòng. Dòng cuối phải nói **vì sao đây là tầng nghẽn chứ
 không phải tầng khác** — đó là phần dạy được nhiều nhất.
@@ -184,3 +205,6 @@ không, sản phẩm đã được index chưa>
 4. **Nêu việc mà không nêu vì sao.**
 5. **Hứa kết quả.** Nói kỳ vọng đo được, không nói chắc chắn cải thiện.
 6. **Đưa một con số ngưỡng mà người dùng chưa cung cấp.**
+7. **Nêu việc không có đối tượng hoặc không có ngưỡng.** "Cải thiện listing" là chủ đề, không phải việc.
+8. **Bỏ khối BÀN GIAO.** Không có khối đó thì không ai đo được việc đã làm có tác dụng hay không, và
+   lần chẩn sau bắt đầu lại từ số không.
