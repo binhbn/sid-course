@@ -1,8 +1,12 @@
 # kb_02_logic.md — Phạm vi, khung chẩn đoán, nguyên nhân
 
-**version:** v2.0 · **cập nhật:** 16/08/2026
+**version:** v2.1 · **cập nhật:** 31/08/2026
 **Thay cho:** `kb_causes.md` + `kb_tree.md` + `kb_coverage.md` (v1, gộp lại vì ba file này luôn phải
 sửa cùng nhau).
+**v2.1:** thêm ô **Ngoại lệ** cho nhánh 1–4 (nhánh 5, 6 đã có sẵn) — mỗi nhánh phải nói được kết
+luận của chính nó sai khi nào. Theo kỹ thuật suy luận thầy Bình dạy buổi 05 (31/08/2026): phát biểu ·
+nguồn · phần nối. Không thêm nội dung nghiệp vụ mới — mọi ngoại lệ đều rút từ cổng và ranh giới đã
+có sẵn trong chính cụm KB này.
 
 Bot đọc file này **sau** `kb_01_data.md` (đọc được dữ liệu) và **trước** `kb_03_thresholds.md`.
 
@@ -303,6 +307,11 @@ lên đúng loại và đủ số lượng (📕, xác nhận 5 lần). Và: *"t
 
 **Ranh giới với nhánh 2:** nhánh 1 là **chưa có campaign**; nhánh 2 là **có mà không tiêu được tiền**.
 
+**Ngoại lệ — kết luận nhánh 1 SAI khi:** file Ads chỉ chứa một phần tài khoản. File D thường được
+export **lọc theo portfolio** (`kb_01`, bảng "Lấy file ở đâu") — campaign nằm ngoài portfolio đó vẫn
+tồn tại mà không có trong file. "Thiếu campaign" lúc này là phạm vi export, không phải tình trạng
+ASIN. Chưa xác nhận được file phủ toàn bộ campaign của ASIN → nói rõ giới hạn này kèm kết luận.
+
 ### Nhánh 2 — Spend không tiêu được · tầng C1
 
 **Cơ chế:** bid hoặc budget không đủ thắng phiên đấu giá, tiền không ra được, ASIN không có traffic.
@@ -313,6 +322,11 @@ rồi mà không tiêu" vì ít từ hoặc volume thấp thì mở broad + phra
 
 **Lưu ý về công cụ:** rule tự động **bất đối xứng** — chỉ tăng bid khi campaign không tiêu, không
 chủ động hạ khi tiêu quá đắt (✅). Nên "không tiêu được" thường tự hồi, còn "tiêu quá đắt" thì không.
+
+**Ngoại lệ — kết luận nhánh 2 SAI khi:** (a) cửa sổ dữ liệu ngắn tới mức chưa đủ mẫu để nói gì
+(`kb_03` §4) — kết hợp với tính bất đối xứng ở trên, "không tiêu" trong cửa sổ ngắn có thể đang
+trên đường tự hồi chứ không phải bệnh; (b) tồn kho bất thường — nhánh 6 **đổi nghĩa** mọi kết luận,
+soi trước khi kết luận nhánh này.
 
 ### Nhánh 3 — Spend rải rác / target lệch intent · tầng C3–PL
 
@@ -330,6 +344,11 @@ rải rác không ra đơn.
 **Ranh giới với nhánh 4:** nhánh 3 làm ASIN **không lên được rank**; nhánh 4 làm ASIN **có traffic
 mà không chốt được đơn**. Dùng C3.2 để phân định.
 
+**Ngoại lệ — kết luận nhánh 3 SAI khi:** (a) spend rải rác **có ra đơn** — tiêu chí là rải rác *mà
+không ra đơn*, thiếu vế sau thì chưa phải bệnh; (b) mục tiêu đang chạy của ASIN là đẩy rank hoặc
+đang khám phá từ khoá (`kb_03` §1.2) — rải rác lúc đó là có chủ đích; (c) kết luận được rút từ **số
+target** thay vì pattern phân bổ spend (xem ngay trên, quyết định 16/08/2026).
+
 ### Nhánh 4 — Listing và tỉ lệ chuyển đổi · tầng C3
 
 **Cơ chế:** traffic vào không thành đơn. Nặng hơn: tỉ lệ chuyển đổi tổng là biến điều khiển bánh đà
@@ -341,6 +360,11 @@ tổng đẹp có thể do organic gánh (✅).
 
 **Bảo trì định kỳ:** tối ưu lại listing tối thiểu một quý một lần, không chỉ sửa khi có sự cố — thuật
 toán đổi làm listing cũ mất đa dạng từ khoá (🧪).
+
+**Ngoại lệ — kết luận nhánh 4 SAI khi:** (a) chưa hỏi **mốc so cho tỉ lệ chuyển đổi** (`kb_03` §1.4)
+— "CVR thấp" là thấp so với gì; không có mốc thì không được gọi là thấp; (b) chưa chạy **C3.2** đối
+chiếu CVR ads với CVR listing — chưa phân định được đây là nhánh 3 hay nhánh 4; (c) tồn kho bất
+thường hoặc vừa đổi giá — CVR tụt vì lý do ngoài listing (nhánh 6 · nhánh 5).
 
 ### Nhánh 5 — Giá và vị thế cạnh tranh · tầng C2–C3
 
