@@ -28,6 +28,14 @@ Buổi 3  Chatbot        →  Master Instruction + 6 file KB, chạy được
 Buổi 4  Decomposition  →  bóc nốt cụt "nghẽn chuyển đổi" → thang chấm listing
 ```
 
+**Một ngoại lệ:** bài `bai-04-information-architect` (Kiến trúc thông tin) của thầy **khoá cứng nguồn
+dữ liệu** — bắt buộc dùng hai file mẫu của thầy (báo cáo tài chính Minh An Retail và kết quả học tập
+THCS Hoà Bình), không cho tự chọn domain. Nên bài đó **không gộp được** vào project ASIN và nằm riêng
+ở [`bai-lam/bai-04-kien-truc-thong-tin/`](bai-lam/bai-04-kien-truc-thong-tin/).
+
+Số buổi của lớp lệch một nhịp so với số bài trong repo thầy — bảng ánh xạ ở
+[`bai-lam/README.md`](bai-lam/README.md).
+
 Tách thành `bai-01/`, `bai-02/`, `bai-03/`, `bai-04/` thì nó trông như bốn bài tập rời và **không ai tải
 về dùng được**. Gộp lại thì nó là một sản phẩm có README, có file cấu hình, có bộ tri thức, có demo —
 và tài liệu thiết kế của bốn buổi nằm trong [`chan-doan-asin/thiet-ke/`](chan-doan-asin/thiet-ke/) theo

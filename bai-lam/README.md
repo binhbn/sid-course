@@ -9,12 +9,37 @@ Sản phẩm chạy được: [`../chan-doan-asin/`](../chan-doan-asin/)
 
 ## Buổi nào nộp gì
 
-| Buổi | Nội dung | Bài nộp | Đọc mất |
+> **Lưu ý số hiệu:** số buổi học của lớp **lệch một nhịp** so với số bài trong repo tài liệu của thầy.
+> Bài `bai-03-decomposition` của thầy được học ở **buổi 04** của lớp. Cột thứ hai dưới đây là để thầy
+> đối chiếu đúng bài, khỏi lần.
+
+| Buổi lớp | Bài trong repo thầy | Nội dung | Bài nộp | Đọc mất |
+|---|---|---|---|---|
+| **01** | `bai-01-framing` | Framing | [`thiet-ke/01-framing-brief.md`](../chan-doan-asin/thiet-ke/01-framing-brief.md) · [`quiz-buoi-01.md`](quiz-buoi-01.md) | 6' |
+| **02** | `bai-02-prompt-stack` | Prompt Stack (RTC-COE) | [`thiet-ke/02-prompt-stack-rtc-coe.md`](../chan-doan-asin/thiet-ke/02-prompt-stack-rtc-coe.md) · [`thiet-ke/07-rtc-coe-prompt.md`](../chan-doan-asin/thiet-ke/07-rtc-coe-prompt.md) · [`quiz-buoi-02.md`](quiz-buoi-02.md) | 8' |
+| **03** | — (repo thầy không có file bài riêng) | Chatbot có KB | [`chan-doan-asin/`](../chan-doan-asin/) — README cài đặt · [`master-instruction.md`](../chan-doan-asin/master-instruction.md) · [`kb/`](../chan-doan-asin/kb/) 6 file · [`thiet-ke/03-framing-brief-v2.md`](../chan-doan-asin/thiet-ke/03-framing-brief-v2.md) · [`thiet-ke/04-kien-truc-SID.md`](../chan-doan-asin/thiet-ke/04-kien-truc-SID.md) | 15' |
+| **04** | `bai-03-decomposition` | Decomposition & Knowledge Mapping | [`thiet-ke/05-decomposition-listing-cvr.md`](../chan-doan-asin/thiet-ke/05-decomposition-listing-cvr.md) · [`thang-cham-diem-listing.md`](../chan-doan-asin/thang-cham-diem-listing.md) · [`demo/`](../chan-doan-asin/demo/) | 20' + xem demo |
+| **cuối** | `bai-04-information-architect` | Kiến trúc thông tin & cách biểu diễn | [`bai-04-kien-truc-thong-tin/`](bai-04-kien-truc-thong-tin/) — 4 bài tập + báo cáo cuối | 15' |
+
+---
+
+## Bài 3 của thầy (Decomposition) — 5 mục yêu cầu nằm ở đâu
+
+Bài này em không tách file riêng, nó nằm trong tài liệu thiết kế của project. Bảng dưới trỏ thẳng
+tới từng mục thầy yêu cầu trong [`bai-03-decomposition-knowledge-mapping-v2.md`](https://github.com/rooneyhoi/SID-course-v2/blob/main/workshop/bai-03-decomposition/bai-03-decomposition-knowledge-mapping-v2.md) §10:
+
+File: [`chan-doan-asin/thiet-ke/05-decomposition-listing-cvr.md`](../chan-doan-asin/thiet-ke/05-decomposition-listing-cvr.md)
+
+| Thầy yêu cầu | Ngưỡng tối thiểu | Nằm ở mục | Thực tế |
 |---|---|---|---|
-| **01** | Framing | [`thiet-ke/01-framing-brief.md`](../chan-doan-asin/thiet-ke/01-framing-brief.md) · [`quiz-buoi-01.md`](quiz-buoi-01.md) | 6' |
-| **02** | Prompt Stack (RTC-COE) | [`thiet-ke/02-prompt-stack-rtc-coe.md`](../chan-doan-asin/thiet-ke/02-prompt-stack-rtc-coe.md) · [`thiet-ke/07-rtc-coe-prompt.md`](../chan-doan-asin/thiet-ke/07-rtc-coe-prompt.md) · [`quiz-buoi-02.md`](quiz-buoi-02.md) | 8' |
-| **03** | Chatbot có KB | [`chan-doan-asin/`](../chan-doan-asin/) — README cài đặt · [`master-instruction.md`](../chan-doan-asin/master-instruction.md) · [`kb/`](../chan-doan-asin/kb/) 6 file · [`thiet-ke/03-framing-brief-v2.md`](../chan-doan-asin/thiet-ke/03-framing-brief-v2.md) · [`thiet-ke/04-kien-truc-SID.md`](../chan-doan-asin/thiet-ke/04-kien-truc-SID.md) | 15' |
-| **04** | Decomposition & Knowledge Mapping | [`thiet-ke/05-decomposition-listing-cvr.md`](../chan-doan-asin/thiet-ke/05-decomposition-listing-cvr.md) · [`thang-cham-diem-listing.md`](../chan-doan-asin/thang-cham-diem-listing.md) · [`demo/`](../chan-doan-asin/demo/) | 20' + xem demo |
+| 1. Framing tóm tắt | 3–5 dòng | §1 | ✅ |
+| 2. Decomposition Tree | ≥3 nhánh cấp 1 · ≥20 node · 3–4 tầng | §3 | 5 nhánh · 37 node · 4 tầng |
+| 3. Functional **hoặc** Stakeholder map | chọn 1 | §4 và §5 | làm cả hai |
+| 4. Lý giải lựa chọn | 150–250 từ | §7 | ~220 từ |
+| 5. Tự chấm theo rubric | /30 | §9 | 26/30 |
+
+Phần thầy không bắt buộc mà em làm thêm: §6 so sánh ba kỹ thuật trên cùng chủ đề, §10 ba chỗ cây
+phân rã **dự đoán sai** khi đem chạy trên sản phẩm thật.
 
 ---
 
